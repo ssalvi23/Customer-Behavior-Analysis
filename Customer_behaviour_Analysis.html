@@ -23,7 +23,7 @@
             color: #333;
         }
 
-        #geo-chart, #area-chart, #stacked-bar-chart, #sentiment-pie-chart {
+        #geo-chart, #age-chart, #order-value-chart, #acquisition-chart, #product-pie-chart, #retention-bar-chart {
             margin: 20px 0;
         }
 
@@ -32,18 +32,6 @@
             margin-top: 20px;
         }
 
-        .bar {
-            fill: steelblue;
-        }
-
-        .x-axis path,
-        .x-axis line {
-            display: none;
-        }
-
-        .legend rect {
-            fill: steelblue;
-        }
     </style>
 </head>
 <body>
@@ -52,175 +40,180 @@
     </header>
 
     <main>
-     
-
-        <!-- Area Chart for Customer Churn Rate by Month -->
-        <section id="churn-rate">
-            <h2>Customer Churn Rate by Month</h2>
-            <div id="area-chart"></div>
+        <!-- Customer Age Distribution -->
+        <section id="customer-age-distribution">
+            <h2>Customer Age Distribution</h2>
+            <div id="age-chart"></div>
         </section>
 
-        <!-- Stacked Bar Chart for Product Preferences by Customer Segment -->
-        <section id="product-preferences">
-            <h2>Product Preferences by Customer Segment</h2>
-            <div id="stacked-bar-chart"></div>
+        <!-- Average Order Value by Customer Segment -->
+        <section id="average-order-value">
+            <h2>Average Order Value by Customer Segment</h2>
+            <div id="order-value-chart"></div>
         </section>
 
-        <!-- Pie Chart for Customer Feedback Sentiment Analysis -->
-        <section id="feedback-sentiment">
-            <h2>Customer Feedback Sentiment Analysis</h2>
-            <div id="sentiment-pie-chart"></div>
+        <!-- Customer Acquisition Over Time -->
+        <section id="customer-acquisition">
+            <h2>Customer Acquisition Over Time</h2>
+            <div id="acquisition-chart"></div>
+        </section>
+
+        <!-- Top Product Categories by Revenue -->
+        <section id="top-product-categories">
+            <h2>Top Product Categories by Revenue</h2>
+            <div id="product-pie-chart"></div>
+        </section>
+
+        <!-- Customer Retention Rate by Quarter -->
+        <section id="customer-retention">
+            <h2>Customer Retention Rate by Quarter</h2>
+            <div id="retention-bar-chart"></div>
         </section>
     </main>
 
-    
+    <footer>
+        <p>&copy; 2024 Customer Behavior Analysis</p>
+    </footer>
+
     <script>
         // Load Google Charts
-        google.charts.load('current', { packages: ['corechart', 'geochart'] });
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
 
-        // Geographical Distribution of Customers (Google GeoChart)
-        google.charts.setOnLoadCallback(drawGeoChart);
-        function drawGeoChart() {
+        // Customer Age Distribution (Google Column Chart)
+        google.charts.setOnLoadCallback(drawAgeChart);
+        function drawAgeChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Country', 'Number of Customers'],
-                ['United States', 1000],
-                ['India', 750],
-                ['Germany', 500],
-                ['Australia', 300],
-                ['Brazil', 200]
+                ['Age Range', 'Number of Customers'],
+                ['18-24', 100],
+                ['25-34', 200],
+                ['35-44', 150],
+                ['45-54', 120],
+                ['55-64', 80],
+                ['65+', 50]
             ]);
 
             var options = {
-                colorAxis: { colors: ['#e0f7fa', '#00695c'] }
+                title: 'Customer Age Distribution',
+                hAxis: { title: 'Age Range' },
+                vAxis: { title: 'Number of Customers' },
+                colors: ['#66bb6a']
             };
 
-            var chart = new google.visualization.GeoChart(document.getElementById('geo-chart'));
+            var chart = new google.visualization.ColumnChart(document.getElementById('age-chart'));
             chart.draw(data, options);
         }
 
-        // Customer Churn Rate by Month (Google Area Chart)
-        google.charts.setOnLoadCallback(drawAreaChart);
-        function drawAreaChart() {
+        // Average Order Value by Customer Segment (Google Line Chart)
+        google.charts.setOnLoadCallback(drawOrderValueChart);
+        function drawOrderValueChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Month', 'Churn Rate'],
-                ['Jan', 0.05],
-                ['Feb', 0.04],
-                ['Mar', 0.03],
-                ['Apr', 0.06],
-                ['May', 0.07],
-                ['Jun', 0.08]
+                ['Segment', 'Average Order Value'],
+                ['Youth', 150],
+                ['Adults', 200],
+                ['Seniors', 120]
             ]);
 
             var options = {
-                title: 'Customer Churn Rate by Month',
-                hAxis: { title: 'Month' },
-                vAxis: { title: 'Churn Rate' },
-                colors: ['#ff7043'],
-                isStacked: true
+                title: 'Average Order Value by Customer Segment',
+                hAxis: { title: 'Customer Segment' },
+                vAxis: { title: 'Average Order Value' },
+                colors: ['#42a5f5']
             };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('area-chart'));
+            var chart = new google.visualization.LineChart(document.getElementById('order-value-chart'));
             chart.draw(data, options);
         }
 
-        // Product Preferences by Customer Segment (D3.js Stacked Bar Chart)
-        const productData = [
-            { segment: 'Youth', electronics: 200, fashion: 300, sports: 100 },
-            { segment: 'Adults', electronics: 250, fashion: 400, sports: 150 },
-            { segment: 'Seniors', electronics: 150, fashion: 200, sports: 50 }
+        // Customer Acquisition Over Time (D3.js Line Chart)
+        const acquisitionData = [
+            { month: 'Jan', customers: 200 },
+            { month: 'Feb', customers: 300 },
+            { month: 'Mar', customers: 400 },
+            { month: 'Apr', customers: 500 },
+            { month: 'May', customers: 700 },
+            { month: 'Jun', customers: 800 }
         ];
 
-        const margin = { top: 20, right: 30, bottom: 40, left: 50 },
-              width = 600 - margin.left - margin.right,
-              height = 400 - margin.top - margin.bottom;
+        const marginAcquisition = { top: 20, right: 30, bottom: 40, left: 50 },
+              widthAcquisition = 600 - marginAcquisition.left - marginAcquisition.right,
+              heightAcquisition = 400 - marginAcquisition.top - marginAcquisition.bottom;
 
-        const svgStackedBar = d3.select("#stacked-bar-chart")
+        const svgAcquisition = d3.select("#acquisition-chart")
             .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", widthAcquisition + marginAcquisition.left + marginAcquisition.right)
+            .attr("height", heightAcquisition + marginAcquisition.top + marginAcquisition.bottom)
             .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+            .attr("transform", `translate(${marginAcquisition.left},${marginAcquisition.top})`);
 
-        const xStacked = d3.scaleBand()
-            .domain(productData.map(d => d.segment))
-            .range([0, width])
+        const xAcquisition = d3.scaleBand()
+            .domain(acquisitionData.map(d => d.month))
+            .range([0, widthAcquisition])
             .padding(0.2);
 
-        const yStacked = d3.scaleLinear()
-            .domain([0, 700])
-            .range([height, 0]);
+        const yAcquisition = d3.scaleLinear()
+            .domain([0, 1000])
+            .range([heightAcquisition, 0]);
 
-        const color = d3.scaleOrdinal()
-            .domain(['electronics', 'fashion', 'sports'])
-            .range(['#4db6ac', '#ff7043', '#8e24aa']);
+        svgAcquisition.append("g")
+            .attr("transform", `translate(0,${heightAcquisition})`)
+            .call(d3.axisBottom(xAcquisition));
 
-        const stackedData = d3.stack()
-            .keys(['electronics', 'fashion', 'sports'])
-            (productData);
+        svgAcquisition.append("g")
+            .call(d3.axisLeft(yAcquisition));
 
-        svgStackedBar.append("g")
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(xStacked));
+        const lineAcquisition = d3.line()
+            .x(d => xAcquisition(d.month))
+            .y(d => yAcquisition(d.customers));
 
-        svgStackedBar.append("g")
-            .call(d3.axisLeft(yStacked));
+        svgAcquisition.append("path")
+            .datum(acquisitionData)
+            .attr("fill", "none")
+            .attr("stroke", "#66bb6a")
+            .attr("stroke-width", 2)
+            .attr("d", lineAcquisition);
 
-        svgStackedBar.selectAll("g.layer")
-            .data(stackedData)
-            .enter()
-            .append("g")
-            .attr("class", "layer")
-            .attr("fill", d => color(d.key))
-            .selectAll("rect")
-            .data(d => d)
-            .enter()
-            .append("rect")
-            .attr("x", d => xStacked(d.data.segment))
-            .attr("y", d => yStacked(d[1]))
-            .attr("height", d => yStacked(d[0]) - yStacked(d[1]))
-            .attr("width", xStacked.bandwidth());
+        // Top Product Categories by Revenue (Google Pie Chart)
+        google.charts.setOnLoadCallback(drawProductPieChart);
+        function drawProductPieChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Category', 'Revenue'],
+                ['Electronics', 1000],
+                ['Fashion', 800],
+                ['Home & Garden', 600],
+                ['Sports', 400],
+                ['Books', 300]
+            ]);
 
-        // Customer Feedback Sentiment Analysis (D3.js Pie Chart)
-        const sentimentData = [
-            { sentiment: 'Positive', count: 600 },
-            { sentiment: 'Neutral', count: 300 },
-            { sentiment: 'Negative', count: 100 }
-        ];
+            var options = {
+                title: 'Top Product Categories by Revenue',
+                colors: ['#42a5f5', '#66bb6a', '#ff7043', '#8e24aa', '#ffca28']
+            };
 
-        const radius = Math.min(width, height) / 2;
+            var chart = new google.visualization.PieChart(document.getElementById('product-pie-chart'));
+            chart.draw(data, options);
+        }
 
-        const svgPie = d3.select("#sentiment-pie-chart")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-            .attr("transform", `translate(${width / 2},${height / 2})`);
+        // Customer Retention Rate by Quarter (Google Bar Chart)
+        google.charts.setOnLoadCallback(drawRetentionBarChart);
+        function drawRetentionBarChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Quarter', 'Retention Rate'],
+                ['Q1', 0.85],
+                ['Q2', 0.80],
+                ['Q3', 0.78],
+                ['Q4', 0.82]
+            ]);
 
-        const pie = d3.pie()
-            .value(d => d.count);
+            var options = {
+                title: 'Customer Retention Rate by Quarter',
+                hAxis: { title: 'Quarter' },
+                vAxis: { title: 'Retention Rate' },
+                colors: ['#ff7043']
+            };
 
-        const arc = d3.arc()
-            .innerRadius(0)
-            .outerRadius(radius);
-
-        const colorPie = d3.scaleOrdinal()
-            .domain(sentimentData.map(d => d.sentiment))
-            .range(['#66bb6a', '#ffb74d', '#e57373']);
-
-        const arcs = svgPie.selectAll("arc")
-            .data(pie(sentimentData))
-            .enter()
-            .append("g")
-            .attr("class", "arc");
-
-        arcs.append("path")
-            .attr("d", arc)
-            .attr("fill", d => colorPie(d.data.sentiment));
-
-        arcs.append("text")
-            .attr("transform", d => `translate(${arc.centroid(d)})`)
-            .attr("text-anchor", "middle")
-            .text(d => d.data.sentiment);
+            var chart = new google.visualization.BarChart(document.getElementById('retention-bar-chart'));
+            chart.draw(data, options);
+        }
     </script>
 </body>
 </html>
